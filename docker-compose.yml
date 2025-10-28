@@ -1,0 +1,10 @@
+services:
+  krakend:
+    image: krakend:latest
+    container_name: krakend-gateway
+    ports:
+      - "8080:8080"
+    volumes:
+      - ./krakend/config:/etc/krakend
+    command: ["run", "-d", "-c", "/etc/krakend/krakend.json"]
+    restart: unless-stopped

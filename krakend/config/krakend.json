@@ -1,0 +1,14 @@
+{
+  "version": 3,
+  "name": "CSDS383 API Gateway",
+  "timeout": "3000ms",
+  "cache_ttl": "300s",
+  "output_encoding": "json",
+  "port": 8080,
+  "endpoints": [],
+  "extra_config": {
+    "router": {
+      "return_error_msg": true
+    }
+  }
+}
