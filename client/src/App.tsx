@@ -54,7 +54,7 @@ export const APIForm: React.FC = () => {
 
   const baseUrl = useMemo(() => {
     // Single root you can change to match your API
-    return "localhost:8080/api"; // e.g. /api/products
+    return "http://localhost:8080/api"; // e.g. /api/products
   }, []);
 
   const resetFieldsFor = (res: Resource, m: Method) => {
