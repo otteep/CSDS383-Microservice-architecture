@@ -131,6 +131,29 @@
     }
   ],
   "extra_config": {
+    "security/cors": {
+      "allow_origins": [
+        "http://localhost:5173",
+        "http://localhost:3000"
+      ],
+      "allow_methods": [
+        "GET",
+        "POST",
+        "PUT",
+        "PATCH",
+        "DELETE",
+        "OPTIONS"
+      ],
+      "allow_headers": [
+        "Content-Type",
+        "Authorization"
+      ],
+      "expose_headers": [
+        "Content-Length",
+        "Content-Type"
+      ],
+      "max_age": "12h"
+    },
     "router": {
       "return_error_msg": true
     }
