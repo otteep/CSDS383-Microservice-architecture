@@ -1,5 +1,5 @@
 import logging
-from fastapi import FastAPI, Depends, status
+from fastapi import FastAPI, Depends, status, HTTPException
 from sqlalchemy.orm import Session
 
 from config import settings
@@ -86,11 +86,19 @@ def patch_product(product_id: str, payload: ProductUpdate, db: Session = Depends
 @app.delete("/products/{product_id}", status_code=status.HTTP_204_NO_CONTENT)
 def delete_product(product_id: str, db: Session = Depends(get_db)):
     existing = crud.get(db, product_id)
-    sids, cids, iids = list(existing.supplier_ids or []), list(existing.category_ids or []), list(existing.image_ids or [])
+    sids = list(existing.supplier_ids or [])
+    cids = list(existing.category_ids or [])
+    iids = list(existing.image_ids or [])
+    
     crud.delete(db, product_id)
-    if sids: sync_remove_product_from_suppliers(product_id, sids)
-    if cids: sync_remove_product_from_categories(product_id, cids)
-    if iids: sync_detach_images_from_product(iids)
+    
+    if sids:
+        sync_remove_product_from_suppliers(product_id, sids)
+    if cids:
+        sync_remove_product_from_categories(product_id, cids)
+    if iids:
+        sync_detach_images_from_product(iids)
+    
     return None
 
 # ---- Relationship endpoints (used by peer services & optionally clients)

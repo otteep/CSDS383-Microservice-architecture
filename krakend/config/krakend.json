@@ -65,7 +65,8 @@
       "backend": [
         {
           "url_pattern": "/products/{product_id}",
-          "host": ["http://product-service:8002"]
+          "host": ["http://product-service:8002"],
+          "encoding": "no-op"
         }
       ]
     },
