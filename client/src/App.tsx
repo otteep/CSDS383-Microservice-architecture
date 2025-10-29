@@ -1,13 +1,12 @@
 import React, { useEffect, useMemo, useState } from "react";
 
-// RAFCE-style export
 export const APIForm: React.FC = () => {
   type Resource =
     | "products"
     | "suppliers"
     | "categories"
     | "images"
-    | "links"; // links covers link/unlink supplier & category
+    | "links";
 
   type Method =
     | "create"
@@ -25,7 +24,6 @@ export const APIForm: React.FC = () => {
   const [result, setResult] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
 
-  // Form fields (all string inputs to avoid raw JSON input)
   const [fields, setFields] = useState<Record<string, string>>({
     // product
     name: "",
@@ -56,7 +54,7 @@ export const APIForm: React.FC = () => {
 
   const baseUrl = useMemo(() => {
     // Single root you can change to match your API
-    return "/api"; // e.g. /api/products
+    return "localhost:8080/api"; // e.g. /api/products
   }, []);
 
   const resetFieldsFor = (res: Resource, m: Method) => {
@@ -82,12 +80,10 @@ export const APIForm: React.FC = () => {
     setFields((p) => ({ ...p, [k]: v }));
   }
 
-  // Helper: build endpoint + fetch options from selection
   const buildRequest = () => {
     let url = "";
     let opts: RequestInit = { headers: {} } as RequestInit;
 
-    // Helpers to avoid repeating
     const pid = encodeURIComponent(fields.product_id || "");
     const sid = encodeURIComponent(fields.supplier_id || "");
     const cid = encodeURIComponent(fields.category_id || "");
@@ -254,9 +250,9 @@ export const APIForm: React.FC = () => {
     setLoading(true);
 
     try {
-      // Basic client-side validation (no raw JSON allowed)
+
+      
       if (["read", "update", "delete"].includes(method)) {
-        // require an id depending on resource
         if (resource === "products" && !fields.product_id) throw new Error("product_id is required");
         if (resource === "suppliers" && !fields.supplier_id) throw new Error("supplier_id is required");
         if (resource === "categories" && !fields.category_id) throw new Error("category_id is required");
@@ -270,11 +266,9 @@ export const APIForm: React.FC = () => {
 
       const { url, opts } = buildRequest();
 
-      // Make request
       const resp = await fetch(url, opts);
       const text = await resp.text();
 
-      // Try parse JSON
       try {
         const json = JSON.parse(text);
         setResult(JSON.stringify(json, null, 2));
@@ -292,13 +286,11 @@ export const APIForm: React.FC = () => {
     }
   };
 
-  // UI helpers
   const methodsForResource = (r: Resource): Method[] => {
     if (r === "links") return ["link", "unlink"];
     return ["create", "read", "list", "update", "delete"];
   };
 
-  // Form pieces for each resource
   const renderFields = () => {
     switch (resource) {
       case "products":
@@ -307,29 +299,29 @@ export const APIForm: React.FC = () => {
             {(method === "create" || method === "update") && (
               <>
                 <label className="block text-sm font-medium">Name</label>
-                <input value={fields.name} onChange={(e) => updateField("name", e.target.value)} className="input" placeholder="Product name" />
+                <input value={fields.name} onChange={(e) => updateField("name", e.target.value)} className="w-full border-4 border-indigo-200 rounded-lg px-2 py-1" placeholder="Product name" />
 
                 <label className="block text-sm font-medium">Description</label>
-                <input value={fields.description} onChange={(e) => updateField("description", e.target.value)} className="input" placeholder="Short description" />
+                <input value={fields.description} onChange={(e) => updateField("description", e.target.value)} className="w-full border-4 border-indigo-200 rounded-lg px-2 py-1"  placeholder="Short description" />
 
                 <div className="grid grid-cols-2 gap-4">
                   <div>
                     <label className="block text-sm font-medium">Quantity</label>
-                    <input value={fields.quantity} onChange={(e) => updateField("quantity", e.target.value)} className="input" placeholder="0" type="number" />
+                    <input value={fields.quantity} onChange={(e) => updateField("quantity", e.target.value)} className="w-full border-4 border-indigo-200 rounded-lg px-2 py-1"  placeholder="0" type="number" />
                   </div>
                   <div>
                     <label className="block text-sm font-medium">Price</label>
-                    <input value={fields.price} onChange={(e) => updateField("price", e.target.value)} className="input" placeholder="0.00" type="number" step="0.01" />
+                    <input value={fields.price} onChange={(e) => updateField("price", e.target.value)} className="w-full border-4 border-indigo-200 rounded-lg px-2 py-1"  placeholder="0.00" type="number" step="0.01" />
                   </div>
                 </div>
               </>
             )}
 
             {(method === "read" || method === "update" || method === "delete") && (
-              <>
+              <div className="">
                 <label className="block text-sm font-medium">Product ID (UUID)</label>
-                <input value={fields.product_id} onChange={(e) => updateField("product_id", e.target.value)} className="input" placeholder="uuid" />
-              </>
+                <input value={fields.product_id} onChange={(e) => updateField("product_id", e.target.value)} className="w-full border-4 border-indigo-200 rounded-lg px-2 py-1"  placeholder="uuid" />
+              </div>
             )}
           </>
         );
@@ -340,17 +332,17 @@ export const APIForm: React.FC = () => {
             {(method === "create" || method === "update") && (
               <>
                 <label className="block text-sm font-medium">Name</label>
-                <input value={fields.name} onChange={(e) => updateField("name", e.target.value)} className="input" placeholder="Supplier name" />
+                <input value={fields.name} onChange={(e) => updateField("name", e.target.value)} className="w-full border-4 border-indigo-200 rounded-lg px-2 py-1"  placeholder="Supplier name" />
 
                 <label className="block text-sm font-medium">Contact Email</label>
-                <input value={fields.contact_email} onChange={(e) => updateField("contact_email", e.target.value)} className="input" placeholder="email@company.com" type="email" />
+                <input value={fields.contact_email} onChange={(e) => updateField("contact_email", e.target.value)} className="w-full border-4 border-indigo-200 rounded-lg px-2 py-1"  placeholder="email@company.com" type="email" />
               </>
             )}
 
             {(method === "read" || method === "update" || method === "delete") && (
               <>
                 <label className="block text-sm font-medium">Supplier ID (UUID)</label>
-                <input value={fields.supplier_id} onChange={(e) => updateField("supplier_id", e.target.value)} className="input" placeholder="uuid" />
+                <input value={fields.supplier_id} onChange={(e) => updateField("supplier_id", e.target.value)} className="w-full border-4 border-indigo-200 rounded-lg px-2 py-1"  placeholder="uuid" />
               </>
             )}
           </>
@@ -362,17 +354,17 @@ export const APIForm: React.FC = () => {
             {(method === "create" || method === "update") && (
               <>
                 <label className="block text-sm font-medium">Name</label>
-                <input value={fields.name} onChange={(e) => updateField("name", e.target.value)} className="input" placeholder="Category name" />
+                <input value={fields.name} onChange={(e) => updateField("name", e.target.value)} className="w-full border-4 border-indigo-200 rounded-lg px-2 py-1"  placeholder="Category name" />
 
                 <label className="block text-sm font-medium">Description</label>
-                <input value={fields.description} onChange={(e) => updateField("description", e.target.value)} className="input" placeholder="Optional description" />
+                <input value={fields.description} onChange={(e) => updateField("description", e.target.value)} className="w-full border-4 border-indigo-200 rounded-lg px-2 py-1"  placeholder="Optional description" />
               </>
             )}
 
             {(method === "read" || method === "update" || method === "delete") && (
               <>
                 <label className="block text-sm font-medium">Category ID (UUID)</label>
-                <input value={fields.category_id} onChange={(e) => updateField("category_id", e.target.value)} className="input" placeholder="uuid" />
+                <input value={fields.category_id} onChange={(e) => updateField("category_id", e.target.value)} className="w-full border-4 border-indigo-200 rounded-lg px-2 py-1"  placeholder="uuid" />
               </>
             )}
           </>
@@ -384,17 +376,17 @@ export const APIForm: React.FC = () => {
             {(method === "create" || method === "update") && (
               <>
                 <label className="block text-sm font-medium">Product ID (UUID)</label>
-                <input value={fields.product_id} onChange={(e) => updateField("product_id", e.target.value)} className="input" placeholder="uuid" />
+                <input value={fields.product_id} onChange={(e) => updateField("product_id", e.target.value)} className="w-full border-4 border-indigo-200 rounded-lg px-2 py-1"  placeholder="uuid" />
 
                 <label className="block text-sm font-medium">Image URL</label>
-                <input value={fields.image_url} onChange={(e) => updateField("image_url", e.target.value)} className="input" placeholder="https://..." />
+                <input value={fields.image_url} onChange={(e) => updateField("image_url", e.target.value)} className="w-full border-4 border-indigo-200 rounded-lg px-2 py-1"  placeholder="https://..." />
               </>
             )}
 
             {(method === "read" || method === "update" || method === "delete") && (
               <>
                 <label className="block text-sm font-medium">Image ID (UUID)</label>
-                <input value={fields.image_id} onChange={(e) => updateField("image_id", e.target.value)} className="input" placeholder="uuid" />
+                <input value={fields.image_id} onChange={(e) => updateField("image_id", e.target.value)} className="w-full border-4 border-indigo-200 rounded-lg px-2 py-1"  placeholder="uuid" />
               </>
             )}
           </>
@@ -404,15 +396,13 @@ export const APIForm: React.FC = () => {
         return (
           <>
             <label className="block text-sm font-medium">Product ID (UUID)</label>
-            <input value={fields.product_id} onChange={(e) => updateField("product_id", e.target.value)} className="input" placeholder="product uuid" />
-
-            <p className="text-xs text-muted">Fill exactly one of the below depending on whether you want to link a supplier or a category.</p>
+            <input value={fields.product_id} onChange={(e) => updateField("product_id", e.target.value)} className="w-full border-4 border-indigo-200 rounded-lg px-2 py-1"  placeholder="product uuid" />
 
             <label className="block text-sm font-medium pt-2">Supplier ID (UUID)</label>
-            <input value={fields.supplier_id} onChange={(e) => updateField("supplier_id", e.target.value)} className="input" placeholder="supplier uuid" />
+            <input value={fields.supplier_id} onChange={(e) => updateField("supplier_id", e.target.value)} className="w-full border-4 border-indigo-200 rounded-lg px-2 py-1"  placeholder="supplier uuid" />
 
             <label className="block text-sm font-medium pt-2">Category ID (UUID)</label>
-            <input value={fields.category_id} onChange={(e) => updateField("category_id", e.target.value)} className="input" placeholder="category uuid" />
+            <input value={fields.category_id} onChange={(e) => updateField("category_id", e.target.value)} className="w-full border-4 border-indigo-200 rounded-lg px-2 py-1"  placeholder="category uuid" />
           </>
         );
 
@@ -428,21 +418,15 @@ export const APIForm: React.FC = () => {
           <header className="flex items-center justify-between mb-6">
             <h1 className="text-2xl font-semibold">Microservices Architecture API</h1>
             <div className="flex items-center gap-3">
-              <button
-                onClick={() => setDark((d) => !d)}
-                className="px-3 py-1 rounded-md border dark:border-gray-700"
-                title="Toggle theme"
-              >
-                {dark ? "Dark" : "Light"}
-              </button>
+
               <span className="text-sm text-muted">Base: {baseUrl}</span>
             </div>
           </header>
 
-          <main className="flex-1 grid grid-cols-1 lg:grid-cols-3 gap-6">
+          <main className="flex-1 grid grid-cols-1 lg:grid-cols-3 gap-6 mt-20">
             <section className="col-span-1 lg:col-span-1 p-4 rounded-2xl shadow-md bg-gray-50 dark:bg-gray-800">
               <label className="block text-sm font-medium">Resource</label>
-              <select value={resource} onChange={(e) => setResource(e.target.value as Resource)} className="input">
+              <select value={resource} onChange={(e) => setResource(e.target.value as Resource)} className="input" >
                 <option className="bg-slate-500" value="products">Products</option>
                 <option className="bg-slate-500" value="suppliers">Suppliers</option>
                 <option className="bg-slate-500" value="categories">Categories</option>
@@ -451,7 +435,7 @@ export const APIForm: React.FC = () => {
               </select>
 
               <label className="block text-sm font-medium mt-4">Method</label>
-              <select value={method} onChange={(e) => setMethod(e.target.value as Method)} className="input">
+              <select value={method} onChange={(e) => setMethod(e.target.value as Method)} className="input" >
                 {methodsForResource(resource).map((m) => (
                   <option className="bg-slate-500" value={m} key={m}>
                     {m}
@@ -459,12 +443,10 @@ export const APIForm: React.FC = () => {
                 ))}
               </select>
 
-              <div className="mt-4 text-sm text-muted">
-                <p>Tip: No raw JSON input — fill individual fields. This form adapts to the resource & method.</p>
-              </div>
+
 
               <div className="mt-6 flex gap-2">
-                <button onClick={() => { setFields((f) => ({ ...f, name: "Example", description: "demo", quantity: "10", price: "9.99" })); }} className="btn-secondary">
+                <button onClick={() => { setFields((f) => ({ ...f, name: "Demo product", description: "Demo description", quantity: "10", price: "9.99", contact_email: "demo@gmail.com" })); }} className="btn-secondary">
                   Fill demo product
                 </button>
                 <button onClick={() => { setFields({ name: "", description: "", quantity: "", price: "", product_id: "", supplier_id: "", contact_email: "", category_id: "", image_id: "", image_url: "" }); }} className="btn-ghost">
@@ -498,12 +480,9 @@ export const APIForm: React.FC = () => {
               </div>
             </section>
           </main>
-
-          <footer className="mt-6 text-xs text-muted">Designed to scale full-page — change <code className="px-1">baseUrl</code> to point to your API.</footer>
         </div>
       </div>
 
-      {/* Tailwind helper classes (local) */}
       <style>{`
         .input { width: 100%; padding: 0.5rem; border-radius: 0.5rem; border: 1px solid rgba(0,0,0,0.08); background: transparent }
         .input:focus { outline: none; box-shadow: 0 0 0 4px rgba(99,102,241,0.08) }
