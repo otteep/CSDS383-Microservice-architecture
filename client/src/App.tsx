@@ -17,6 +17,7 @@ export const APIForm: React.FC = () => {
     | "link"
     | "unlink";
 
+
   const [resource, setResource] = useState<Resource>("products");
   const [method, setMethod] = useState<Method>("create");
   const [dark, setDark] = useState<boolean>(false);
@@ -41,6 +42,7 @@ export const APIForm: React.FC = () => {
     image_url: "",
   });
 
+
   useEffect(() => {
     const prefersDark = window.matchMedia && window.matchMedia("(prefers-color-scheme: dark)").matches;
     setDark(prefersDark);
@@ -54,7 +56,7 @@ export const APIForm: React.FC = () => {
 
   const baseUrl = useMemo(() => {
     // Single root you can change to match your API
-    return "localhost:8080/api"; // e.g. /api/products
+    return "http://localhost:8080/api"; // e.g. /api/products
   }, []);
 
   const resetFieldsFor = (res: Resource, m: Method) => {
@@ -426,7 +428,7 @@ export const APIForm: React.FC = () => {
           <main className="flex-1 grid grid-cols-1 lg:grid-cols-3 gap-6 mt-20">
             <section className="col-span-1 lg:col-span-1 p-4 rounded-2xl shadow-md bg-gray-50 dark:bg-gray-800">
               <label className="block text-sm font-medium">Resource</label>
-              <select value={resource} onChange={(e) => setResource(e.target.value as Resource)} className="input" >
+              <select value={resource} onChange={(e) => {setResource(e.target.value as Resource);setMethod("create");}} className="input" >
                 <option className="bg-slate-500" value="products">Products</option>
                 <option className="bg-slate-500" value="suppliers">Suppliers</option>
                 <option className="bg-slate-500" value="categories">Categories</option>
