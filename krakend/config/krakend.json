@@ -5,7 +5,131 @@
   "cache_ttl": "300s",
   "output_encoding": "json",
   "port": 8080,
-  "endpoints": [],
+  "endpoints": [
+    {
+      "endpoint": "/api/products",
+      "method": "GET",
+      "output_encoding": "json",
+      "backend": [
+        {
+          "url_pattern": "/products",
+          "host": ["http://product-service:8002"],
+          "encoding": "json",
+          "is_collection": true
+        }
+      ]
+    },
+    {
+      "endpoint": "/api/products/{product_id}",
+      "method": "GET",
+      "backend": [
+        {
+          "url_pattern": "/products/{product_id}",
+          "host": ["http://product-service:8002"]
+        }
+      ]
+    },
+    {
+      "endpoint": "/api/products",
+      "method": "POST",
+      "backend": [
+        {
+          "url_pattern": "/products",
+          "host": ["http://product-service:8002"]
+        }
+      ]
+    },
+    {
+      "endpoint": "/api/products/{product_id}",
+      "method": "PUT",
+      "backend": [
+        {
+          "url_pattern": "/products/{product_id}",
+          "host": ["http://product-service:8002"]
+        }
+      ]
+    },
+    {
+      "endpoint": "/api/products/{product_id}",
+      "method": "PATCH",
+      "backend": [
+        {
+          "url_pattern": "/products/{product_id}",
+          "host": ["http://product-service:8002"]
+        }
+      ]
+    },
+    {
+      "endpoint": "/api/products/{product_id}",
+      "method": "DELETE",
+      "backend": [
+        {
+          "url_pattern": "/products/{product_id}",
+          "host": ["http://product-service:8002"]
+        }
+      ]
+    },
+    {
+      "endpoint": "/api/products/{product_id}/suppliers/{supplier_id}",
+      "method": "POST",
+      "backend": [
+        {
+          "url_pattern": "/products/{product_id}/suppliers/{supplier_id}",
+          "host": ["http://product-service:8002"]
+        }
+      ]
+    },
+    {
+      "endpoint": "/api/products/{product_id}/suppliers/{supplier_id}",
+      "method": "DELETE",
+      "backend": [
+        {
+          "url_pattern": "/products/{product_id}/suppliers/{supplier_id}",
+          "host": ["http://product-service:8002"]
+        }
+      ]
+    },
+    {
+      "endpoint": "/api/products/{product_id}/categories/{category_id}",
+      "method": "POST",
+      "backend": [
+        {
+          "url_pattern": "/products/{product_id}/categories/{category_id}",
+          "host": ["http://product-service:8002"]
+        }
+      ]
+    },
+    {
+      "endpoint": "/api/products/{product_id}/categories/{category_id}",
+      "method": "DELETE",
+      "backend": [
+        {
+          "url_pattern": "/products/{product_id}/categories/{category_id}",
+          "host": ["http://product-service:8002"]
+        }
+      ]
+    },
+    {
+      "endpoint": "/api/products/{product_id}/images/{image_id}",
+      "method": "POST",
+      "backend": [
+        {
+          "url_pattern": "/products/{product_id}/images/{image_id}",
+          "host": ["http://product-service:8002"]
+        }
+      ]
+    },
+    {
+      "endpoint": "/api/products/{product_id}/images/{image_id}",
+      "method": "DELETE",
+      "backend": [
+        {
+          "url_pattern": "/products/{product_id}/images/{image_id}",
+          "host": ["http://product-service:8002"]
+        }
+      ]
+    }
+  ],
   "extra_config": {
     "router": {
       "return_error_msg": true

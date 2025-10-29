@@ -1,4 +1,18 @@
 services:
+  product-service:
+    build:
+      context: ./server/product
+      dockerfile: Dockerfile.dockerfile
+    container_name: product-service
+    ports:
+      - "8002:8002"
+    environment:
+      - SUPPLIER_BASE_URL=http://supplier-service:8001/suppliers
+      - CATEGORY_BASE_URL=http://category-service:8003/categories
+      - IMAGE_BASE_URL=http://image-service:8004/images
+      - DATABASE_URL=sqlite:///./product.db
+    restart: unless-stopped
+
   krakend:
     image: krakend:latest
     container_name: krakend-gateway
@@ -7,4 +21,6 @@ services:
     volumes:
       - ./krakend/config:/etc/krakend
     command: ["run", "-d", "-c", "/etc/krakend/krakend.json"]
+    depends_on:
+      - product-service
     restart: unless-stopped
