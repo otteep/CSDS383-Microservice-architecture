@@ -92,12 +92,13 @@ def delete_product(product_id: str, db: Session = Depends(get_db)):
     
     crud.delete(db, product_id)
     
-    if sids:
-        sync_remove_product_from_suppliers(product_id, sids)
-    if cids:
-        sync_remove_product_from_categories(product_id, cids)
-    if iids:
-        sync_detach_images_from_product(iids)
+    # TEMPORARILY DISABLED - other services not running
+    # if sids:
+    #     sync_remove_product_from_suppliers(product_id, sids)
+    # if cids:
+    #     sync_remove_product_from_categories(product_id, cids)
+    # if iids:
+    #     sync_detach_images_from_product(iids)
     
     return None
 

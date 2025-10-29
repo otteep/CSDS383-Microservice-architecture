@@ -2,7 +2,7 @@
   "version": 3,
   "name": "CSDS383 API Gateway",
   "timeout": "3000ms",
-  "cache_ttl": "300s",
+  "cache_ttl": "0s",
   "output_encoding": "json",
   "port": 8080,
   "endpoints": [
@@ -10,6 +10,7 @@
       "endpoint": "/api/products",
       "method": "GET",
       "output_encoding": "json",
+      "cache_ttl": "0s",
       "backend": [
         {
           "url_pattern": "/products",
@@ -17,7 +18,12 @@
           "encoding": "json",
           "is_collection": true
         }
-      ]
+      ],
+      "extra_config": {
+        "qos/http-cache": {
+          "shared": false
+        }
+      }
     },
     {
       "endpoint": "/api/products/{product_id}",
@@ -147,7 +153,8 @@
       ],
       "allow_headers": [
         "Content-Type",
-        "Authorization"
+        "Authorization",
+        "Cache-Control"
       ],
       "expose_headers": [
         "Content-Length",
