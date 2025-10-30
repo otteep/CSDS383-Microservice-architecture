@@ -135,6 +135,76 @@
           "host": ["http://product-service:8002"]
         }
       ]
+    },
+    {
+      "endpoint": "/api/images",
+      "method": "GET",
+      "output_encoding": "json",
+      "cache_ttl": "0s",
+      "backend": [
+        {
+          "url_pattern": "/images",
+          "host": ["http://image-service:8004"],
+          "encoding": "json",
+          "is_collection": true
+        }
+      ],
+      "extra_config": {
+        "qos/http-cache": {
+          "shared": false
+        }
+      }
+    },
+    {
+      "endpoint": "/api/images/{image_id}",
+      "method": "GET",
+      "backend": [
+        {
+          "url_pattern": "/images/{image_id}",
+          "host": ["http://image-service:8004"]
+        }
+      ]
+    },
+    {
+      "endpoint": "/api/images",
+      "method": "POST",
+      "backend": [
+        {
+          "url_pattern": "/images",
+          "host": ["http://image-service:8004"]
+        }
+      ]
+    },
+    {
+      "endpoint": "/api/images/{image_id}",
+      "method": "PUT",
+      "backend": [
+        {
+          "url_pattern": "/images/{image_id}",
+          "host": ["http://image-service:8004"]
+        }
+      ]
+    },
+    {
+      "endpoint": "/api/images/{image_id}",
+      "method": "PATCH",
+      "backend": [
+        {
+          "url_pattern": "/images/{image_id}",
+          "host": ["http://image-service:8004"]
+        }
+      ]
+    },
+    {
+      "endpoint": "/api/images/{image_id}",
+      "method": "DELETE",
+      "backend": [
+        {
+          "url_pattern": "/images/{image_id}",
+          "host": ["http://image-service:8004"],
+          "encoding": "no-op"
+        }
+      ]
     }
   ],
   "extra_config": {

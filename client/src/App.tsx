@@ -198,7 +198,10 @@ export const APIForm: React.FC = () => {
           url = `${baseUrl}/images`;
           opts.method = "POST";
           opts.headers = { "Content-Type": "application/json" };
-          opts.body = JSON.stringify({ product_id: fields.product_id, image_url: fields.image_url });
+          opts.body = JSON.stringify({ 
+            product_id: fields.product_id, 
+            url: fields.image_url  
+          });
           break;
         case "read":
           url = `${baseUrl}/images/${imgid}`;
@@ -212,7 +215,10 @@ export const APIForm: React.FC = () => {
           url = `${baseUrl}/images/${imgid}`;
           opts.method = "PUT";
           opts.headers = { "Content-Type": "application/json" };
-          opts.body = JSON.stringify({ product_id: fields.product_id || undefined, image_url: fields.image_url || undefined });
+          opts.body = JSON.stringify({ 
+            product_id: fields.product_id || undefined, 
+            url: fields.image_url || undefined  
+          });
           break;
         case "delete":
           url = `${baseUrl}/images/${imgid}`;
