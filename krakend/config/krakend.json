@@ -205,6 +205,96 @@
           "encoding": "no-op"
         }
       ]
+    },
+    {
+      "endpoint": "/api/categories",
+      "method": "GET",
+      "output_encoding": "json",
+      "cache_ttl": "0s",
+      "backend": [
+        {
+          "url_pattern": "/categories",
+          "host": ["http://category-service:8003"],
+          "encoding": "json",
+          "is_collection": true
+        }
+      ],
+      "extra_config": {
+        "qos/http-cache": {
+          "shared": false
+        }
+      }
+    },
+    {
+      "endpoint": "/api/categories/{category_id}",
+      "method": "GET",
+      "backend": [
+        {
+          "url_pattern": "/categories/{category_id}",
+          "host": ["http://category-service:8003"]
+        }
+      ]
+    },
+    {
+      "endpoint": "/api/categories",
+      "method": "POST",
+      "backend": [
+        {
+          "url_pattern": "/categories",
+          "host": ["http://category-service:8003"]
+        }
+      ]
+    },
+    {
+      "endpoint": "/api/categories/{category_id}",
+      "method": "PUT",
+      "backend": [
+        {
+          "url_pattern": "/categories/{category_id}",
+          "host": ["http://category-service:8003"]
+        }
+      ]
+    },
+    {
+      "endpoint": "/api/categories/{category_id}",
+      "method": "PATCH",
+      "backend": [
+        {
+          "url_pattern": "/categories/{category_id}",
+          "host": ["http://category-service:8003"]
+        }
+      ]
+    },
+    {
+      "endpoint": "/api/categories/{category_id}",
+      "method": "DELETE",
+      "backend": [
+        {
+          "url_pattern": "/categories/{category_id}",
+          "host": ["http://category-service:8003"],
+          "encoding": "no-op"
+        }
+      ]
+    },
+    {
+      "endpoint": "/api/categories/{category_id}/products",
+      "method": "POST",
+      "backend": [
+        {
+          "url_pattern": "/categories/{category_id}/products",
+          "host": ["http://category-service:8003"]
+        }
+      ]
+    },
+    {
+      "endpoint": "/api/categories/{category_id}/products/{product_id}",
+      "method": "DELETE",
+      "backend": [
+        {
+          "url_pattern": "/categories/{category_id}/products/{product_id}",
+          "host": ["http://category-service:8003"]
+        }
+      ]
     }
   ],
   "extra_config": {

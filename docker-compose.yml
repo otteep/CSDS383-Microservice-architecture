@@ -13,6 +13,18 @@ services:
       - DATABASE_URL=sqlite:///./product.db
     restart: unless-stopped
 
+  category-service:
+    build:
+      context: ./server/category
+      dockerfile: Dockerfile.dockerfile
+    container_name: category-service
+    ports:
+      - "8003:8003"
+    environment:
+      - PRODUCT_BASE_URL=http://product-service:8002/products
+      - DATABASE_URL=sqlite:///./category.db
+    restart: unless-stopped
+
   image-service:
     build:
       context: ./server/image
