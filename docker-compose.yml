@@ -13,6 +13,18 @@ services:
       - DATABASE_URL=sqlite:///./product.db
     restart: unless-stopped
 
+  supplier-service:
+    build:
+      context: ./server/supplier
+      dockerfile: Dockerfile.dockerfile
+    container_name: supplier-service
+    ports:
+      - "8001:8001"
+    environment:
+      - PRODUCT_BASE_URL=http://product-service:8002/products
+      - DATABASE_URL=sqlite:///./supplier.db
+    restart: unless-stopped
+
   category-service:
     build:
       context: ./server/category
@@ -47,4 +59,7 @@ services:
     command: ["run", "-d", "-c", "/etc/krakend/krakend.json"]
     depends_on:
       - product-service
+      - supplier-service
+      - category-service
+      - image-service
     restart: unless-stopped

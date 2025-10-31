@@ -295,6 +295,96 @@
           "host": ["http://category-service:8003"]
         }
       ]
+    },
+    {
+      "endpoint": "/api/suppliers",
+      "method": "GET",
+      "output_encoding": "json",
+      "cache_ttl": "0s",
+      "backend": [
+        {
+          "url_pattern": "/suppliers",
+          "host": ["http://supplier-service:8001"],
+          "encoding": "json",
+          "is_collection": true
+        }
+      ],
+      "extra_config": {
+        "qos/http-cache": {
+          "shared": false
+        }
+      }
+    },
+    {
+      "endpoint": "/api/suppliers/{supplier_id}",
+      "method": "GET",
+      "backend": [
+        {
+          "url_pattern": "/suppliers/{supplier_id}",
+          "host": ["http://supplier-service:8001"]
+        }
+      ]
+    },
+    {
+      "endpoint": "/api/suppliers",
+      "method": "POST",
+      "backend": [
+        {
+          "url_pattern": "/suppliers",
+          "host": ["http://supplier-service:8001"]
+        }
+      ]
+    },
+    {
+      "endpoint": "/api/suppliers/{supplier_id}",
+      "method": "PUT",
+      "backend": [
+        {
+          "url_pattern": "/suppliers/{supplier_id}",
+          "host": ["http://supplier-service:8001"]
+        }
+      ]
+    },
+    {
+      "endpoint": "/api/suppliers/{supplier_id}",
+      "method": "PATCH",
+      "backend": [
+        {
+          "url_pattern": "/suppliers/{supplier_id}",
+          "host": ["http://supplier-service:8001"]
+        }
+      ]
+    },
+    {
+      "endpoint": "/api/suppliers/{supplier_id}",
+      "method": "DELETE",
+      "backend": [
+        {
+          "url_pattern": "/suppliers/{supplier_id}",
+          "host": ["http://supplier-service:8001"],
+          "encoding": "no-op"
+        }
+      ]
+    },
+    {
+      "endpoint": "/api/suppliers/{supplier_id}/products",
+      "method": "POST",
+      "backend": [
+        {
+          "url_pattern": "/suppliers/{supplier_id}/products",
+          "host": ["http://supplier-service:8001"]
+        }
+      ]
+    },
+    {
+      "endpoint": "/api/suppliers/{supplier_id}/products/{product_id}",
+      "method": "DELETE",
+      "backend": [
+        {
+          "url_pattern": "/suppliers/{supplier_id}/products/{product_id}",
+          "host": ["http://supplier-service:8001"]
+        }
+      ]
     }
   ],
   "extra_config": {
