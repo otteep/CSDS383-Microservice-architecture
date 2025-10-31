@@ -42,6 +42,30 @@ export const APIForm: React.FC = () => {
     image_url: "",
   });
 
+  const fillDemoString = () => {
+    const alphabets = [" ","a","b","c","d","e","f","g","h","i","j","k",'l',"m","n","o","p","q","r","s","t","u","v","w","x","y","z"]
+    const randomWordLen = Math.floor(Math.random() * alphabets.length);
+    let res = ""
+    for(let i=0; i<randomWordLen; i++) {
+      const randomAlphabet = Math.floor(Math.random() * 26);
+      let curAlphabet = alphabets[randomAlphabet];
+      res += curAlphabet;
+
+    }
+    return res;
+  }
+  const fillDemoInt = () => {
+    const numbers = [0,1,2,3,4,5,6,7,8,9]
+    const randomWordLen = 3;
+    let res = ""
+    for(let i=0; i<randomWordLen; i++) {
+      const randomNum = Math.floor(Math.random() * numbers.length);
+      let curNum = numbers[randomNum];
+      res += curNum;
+
+    }
+    return res;
+  }
 
   useEffect(() => {
     const prefersDark = window.matchMedia && window.matchMedia("(prefers-color-scheme: dark)").matches;
@@ -448,7 +472,7 @@ export const APIForm: React.FC = () => {
 
 
               <div className="mt-6 flex gap-2">
-                <button onClick={() => { setFields((f) => ({ ...f, name: "Demo product", description: "Demo description", quantity: "10", price: "9.99", contact_email: "demo@gmail.com" })); }} className="btn-secondary">
+                <button onClick={() => { setFields((f) => ({ ...f, name: fillDemoString(), description:fillDemoString(), quantity: fillDemoInt(), price: fillDemoInt() + ".99", contact_email: fillDemoString().replaceAll(" ","") + "@gmail.com" })); }} className="btn-secondary">
                   Fill demo product
                 </button>
                 <button onClick={() => { setFields({ name: "", description: "", quantity: "", price: "", product_id: "", supplier_id: "", contact_email: "", category_id: "", image_id: "", image_url: "" }); }} className="btn-ghost">

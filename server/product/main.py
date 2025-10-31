@@ -98,7 +98,7 @@ def delete_product(product_id: str, db: Session = Depends(get_db)):
         sync_remove_product_from_categories(product_id, cids)
     if iids:
         sync_detach_images_from_product(iids)
-    
+    print(existing)
     return None
 
 # ---- Relationship endpoints (used by peer services & optionally clients)
