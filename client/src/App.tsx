@@ -295,7 +295,15 @@ export const APIForm: React.FC = () => {
   const methodsForResource = (r: Resource): Method[] => {
     if (r === "links") return ["link", "unlink"];
     return ["create", "read", "list", "update", "delete"];
+    
   };
+  
+    useEffect(() => {
+    const allowed = methodsForResource(resource);
+      if (!allowed.includes(method)) {
+        setMethod(allowed[0]);
+      }
+    }, [resource, method]);
 
   const renderFields = () => {
     switch (resource) {
