@@ -42,31 +42,6 @@ export const APIForm: React.FC = () => {
     image_url: "",
   });
 
-  const fillDemoString = () => {
-    const alphabets = [" ","a","b","c","d","e","f","g","h","i","j","k",'l',"m","n","o","p","q","r","s","t","u","v","w","x","y","z"]
-    const randomWordLen = Math.floor(Math.random() * alphabets.length);
-    let res = ""
-    for(let i=0; i<randomWordLen; i++) {
-      const randomAlphabet = Math.floor(Math.random() * 26);
-      let curAlphabet = alphabets[randomAlphabet];
-      res += curAlphabet;
-
-    }
-    return res;
-  }
-  const fillDemoInt = () => {
-    const numbers = [0,1,2,3,4,5,6,7,8,9]
-    const randomWordLen = 3;
-    let res = ""
-    for(let i=0; i<randomWordLen; i++) {
-      const randomNum = Math.floor(Math.random() * numbers.length);
-      let curNum = numbers[randomNum];
-      res += curNum;
-
-    }
-    return res;
-  }
-
   useEffect(() => {
     const prefersDark = window.matchMedia && window.matchMedia("(prefers-color-scheme: dark)").matches;
     setDark(prefersDark);
@@ -78,7 +53,7 @@ export const APIForm: React.FC = () => {
   }, [resource, method]);
 
   const baseUrl = useMemo(() => {
-    return "http://localhost:8080/api"; 
+    return import.meta.env.VITE_API_BASE_URL || "http://localhost:8080/api";
   }, []);
 
   const resetFieldsFor = () => {
@@ -97,7 +72,7 @@ export const APIForm: React.FC = () => {
     }));
   };
 
-  useEffect(() => resetFieldsFor(resource, method), [resource, method]);
+  useEffect(() => resetFieldsFor(), [resource, method]);
 
   function updateField(k: string, v: string) {
     setFields((p) => ({ ...p, [k]: v }));
