@@ -4,3 +4,4 @@ krakend/logs/
 # Docker
 .env
 docker-compose.override.yml
+cli-test-commands.txt
