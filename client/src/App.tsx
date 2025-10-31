@@ -34,7 +34,7 @@ export const APIForm: React.FC = () => {
     product_id: "",
     // supplier
     supplier_id: "",
-    contact_email: "",
+    contact: "",
     // category
     category_id: "",
     // image
@@ -73,18 +73,15 @@ export const APIForm: React.FC = () => {
   }, []);
 
   useEffect(() => {
-    // reset result/error on resource or method change
     setResult(null);
     setError(null);
   }, [resource, method]);
 
   const baseUrl = useMemo(() => {
-    // Single root you can change to match your API
-    return "http://localhost:8080/api"; // e.g. /api/products
+    return "http://localhost:8080/api"; 
   }, []);
 
-  const resetFieldsFor = (res: Resource, m: Method) => {
-    // minimal reset to ease UI
+  const resetFieldsFor = () => {
     setFields((prev) => ({
       ...prev,
       name: "",
@@ -93,7 +90,7 @@ export const APIForm: React.FC = () => {
       price: "",
       product_id: "",
       supplier_id: "",
-      contact_email: "",
+      contact: "",
       category_id: "",
       image_id: "",
       image_url: "",
@@ -162,7 +159,7 @@ export const APIForm: React.FC = () => {
           url = `${baseUrl}/suppliers`;
           opts.method = "POST";
           opts.headers = { "Content-Type": "application/json" };
-          opts.body = JSON.stringify({ name: fields.name, contact_email: fields.contact_email });
+          opts.body = JSON.stringify({ name: fields.name, contact: fields.contact });
           break;
         case "read":
           url = `${baseUrl}/suppliers/${sid}`;
@@ -176,7 +173,7 @@ export const APIForm: React.FC = () => {
           url = `${baseUrl}/suppliers/${sid}`;
           opts.method = "PUT";
           opts.headers = { "Content-Type": "application/json" };
-          opts.body = JSON.stringify({ name: fields.name || undefined, contact_email: fields.contact_email || undefined });
+          opts.body = JSON.stringify({ name: fields.name || undefined, contact: fields.contact || undefined });
           break;
         case "delete":
           url = `${baseUrl}/suppliers/${sid}`;
@@ -224,7 +221,10 @@ export const APIForm: React.FC = () => {
           url = `${baseUrl}/images`;
           opts.method = "POST";
           opts.headers = { "Content-Type": "application/json" };
-          opts.body = JSON.stringify({ product_id: fields.product_id, image_url: fields.image_url });
+          opts.body = JSON.stringify({ 
+            product_id: fields.product_id, 
+            url: fields.image_url  
+          });
           break;
         case "read":
           url = `${baseUrl}/images/${imgid}`;
@@ -238,7 +238,10 @@ export const APIForm: React.FC = () => {
           url = `${baseUrl}/images/${imgid}`;
           opts.method = "PUT";
           opts.headers = { "Content-Type": "application/json" };
-          opts.body = JSON.stringify({ product_id: fields.product_id || undefined, image_url: fields.image_url || undefined });
+          opts.body = JSON.stringify({ 
+            product_id: fields.product_id || undefined, 
+            url: fields.image_url || undefined  
+          });
           break;
         case "delete":
           url = `${baseUrl}/images/${imgid}`;
@@ -315,7 +318,15 @@ export const APIForm: React.FC = () => {
   const methodsForResource = (r: Resource): Method[] => {
     if (r === "links") return ["link", "unlink"];
     return ["create", "read", "list", "update", "delete"];
+    
   };
+  
+    useEffect(() => {
+    const allowed = methodsForResource(resource);
+      if (!allowed.includes(method)) {
+        setMethod(allowed[0]);
+      }
+    }, [resource, method]);
 
   const renderFields = () => {
     switch (resource) {
@@ -360,8 +371,8 @@ export const APIForm: React.FC = () => {
                 <label className="block text-sm font-medium">Name</label>
                 <input value={fields.name} onChange={(e) => updateField("name", e.target.value)} className="w-full border-4 border-indigo-200 rounded-lg px-2 py-1"  placeholder="Supplier name" />
 
-                <label className="block text-sm font-medium">Contact Email</label>
-                <input value={fields.contact_email} onChange={(e) => updateField("contact_email", e.target.value)} className="w-full border-4 border-indigo-200 rounded-lg px-2 py-1"  placeholder="email@company.com" type="email" />
+                <label className="block text-sm font-medium">Contact</label>
+                <input value={fields.contact} onChange={(e) => updateField("contact", e.target.value)} className="w-full border-4 border-indigo-200 rounded-lg px-2 py-1"  placeholder="email@company.com" type="email" />
               </>
             )}
 
@@ -472,10 +483,10 @@ export const APIForm: React.FC = () => {
 
 
               <div className="mt-6 flex gap-2">
-                <button onClick={() => { setFields((f) => ({ ...f, name: fillDemoString(), description:fillDemoString(), quantity: fillDemoInt(), price: fillDemoInt() + ".99", contact_email: fillDemoString().replaceAll(" ","") + "@gmail.com" })); }} className="btn-secondary">
+                <button onClick={() => { setFields((f) => ({ ...f, name: "Demo product", description: "Demo description", quantity: "10", price: "9.99", contact: "demo@gmail.com" })); }} className="btn-secondary">
                   Fill demo product
                 </button>
-                <button onClick={() => { setFields({ name: "", description: "", quantity: "", price: "", product_id: "", supplier_id: "", contact_email: "", category_id: "", image_id: "", image_url: "" }); }} className="btn-ghost">
+                <button onClick={() => { setFields({ name: "", description: "", quantity: "", price: "", product_id: "", supplier_id: "", contact: "", category_id: "", image_id: "", image_url: "" }); }} className="btn-ghost">
                   Clear
                 </button>
               </div>

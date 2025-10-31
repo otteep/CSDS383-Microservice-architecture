@@ -2,7 +2,7 @@
   "version": 3,
   "name": "CSDS383 API Gateway",
   "timeout": "3000ms",
-  "cache_ttl": "300s",
+  "cache_ttl": "0s",
   "output_encoding": "json",
   "port": 8080,
   "endpoints": [
@@ -10,6 +10,7 @@
       "endpoint": "/api/products",
       "method": "GET",
       "output_encoding": "json",
+      "cache_ttl": "0s",
       "backend": [
         {
           "url_pattern": "/products",
@@ -17,7 +18,12 @@
           "encoding": "json",
           "is_collection": true
         }
-      ]
+      ],
+      "extra_config": {
+        "qos/http-cache": {
+          "shared": false
+        }
+      }
     },
     {
       "endpoint": "/api/products/{product_id}",
@@ -129,6 +135,256 @@
           "host": ["http://product-service:8002"]
         }
       ]
+    },
+    {
+      "endpoint": "/api/images",
+      "method": "GET",
+      "output_encoding": "json",
+      "cache_ttl": "0s",
+      "backend": [
+        {
+          "url_pattern": "/images",
+          "host": ["http://image-service:8004"],
+          "encoding": "json",
+          "is_collection": true
+        }
+      ],
+      "extra_config": {
+        "qos/http-cache": {
+          "shared": false
+        }
+      }
+    },
+    {
+      "endpoint": "/api/images/{image_id}",
+      "method": "GET",
+      "backend": [
+        {
+          "url_pattern": "/images/{image_id}",
+          "host": ["http://image-service:8004"]
+        }
+      ]
+    },
+    {
+      "endpoint": "/api/images",
+      "method": "POST",
+      "backend": [
+        {
+          "url_pattern": "/images",
+          "host": ["http://image-service:8004"]
+        }
+      ]
+    },
+    {
+      "endpoint": "/api/images/{image_id}",
+      "method": "PUT",
+      "backend": [
+        {
+          "url_pattern": "/images/{image_id}",
+          "host": ["http://image-service:8004"]
+        }
+      ]
+    },
+    {
+      "endpoint": "/api/images/{image_id}",
+      "method": "PATCH",
+      "backend": [
+        {
+          "url_pattern": "/images/{image_id}",
+          "host": ["http://image-service:8004"]
+        }
+      ]
+    },
+    {
+      "endpoint": "/api/images/{image_id}",
+      "method": "DELETE",
+      "backend": [
+        {
+          "url_pattern": "/images/{image_id}",
+          "host": ["http://image-service:8004"],
+          "encoding": "no-op"
+        }
+      ]
+    },
+    {
+      "endpoint": "/api/categories",
+      "method": "GET",
+      "output_encoding": "json",
+      "cache_ttl": "0s",
+      "backend": [
+        {
+          "url_pattern": "/categories",
+          "host": ["http://category-service:8003"],
+          "encoding": "json",
+          "is_collection": true
+        }
+      ],
+      "extra_config": {
+        "qos/http-cache": {
+          "shared": false
+        }
+      }
+    },
+    {
+      "endpoint": "/api/categories/{category_id}",
+      "method": "GET",
+      "backend": [
+        {
+          "url_pattern": "/categories/{category_id}",
+          "host": ["http://category-service:8003"]
+        }
+      ]
+    },
+    {
+      "endpoint": "/api/categories",
+      "method": "POST",
+      "backend": [
+        {
+          "url_pattern": "/categories",
+          "host": ["http://category-service:8003"]
+        }
+      ]
+    },
+    {
+      "endpoint": "/api/categories/{category_id}",
+      "method": "PUT",
+      "backend": [
+        {
+          "url_pattern": "/categories/{category_id}",
+          "host": ["http://category-service:8003"]
+        }
+      ]
+    },
+    {
+      "endpoint": "/api/categories/{category_id}",
+      "method": "PATCH",
+      "backend": [
+        {
+          "url_pattern": "/categories/{category_id}",
+          "host": ["http://category-service:8003"]
+        }
+      ]
+    },
+    {
+      "endpoint": "/api/categories/{category_id}",
+      "method": "DELETE",
+      "backend": [
+        {
+          "url_pattern": "/categories/{category_id}",
+          "host": ["http://category-service:8003"],
+          "encoding": "no-op"
+        }
+      ]
+    },
+    {
+      "endpoint": "/api/categories/{category_id}/products",
+      "method": "POST",
+      "backend": [
+        {
+          "url_pattern": "/categories/{category_id}/products",
+          "host": ["http://category-service:8003"]
+        }
+      ]
+    },
+    {
+      "endpoint": "/api/categories/{category_id}/products/{product_id}",
+      "method": "DELETE",
+      "backend": [
+        {
+          "url_pattern": "/categories/{category_id}/products/{product_id}",
+          "host": ["http://category-service:8003"]
+        }
+      ]
+    },
+    {
+      "endpoint": "/api/suppliers",
+      "method": "GET",
+      "output_encoding": "json",
+      "cache_ttl": "0s",
+      "backend": [
+        {
+          "url_pattern": "/suppliers",
+          "host": ["http://supplier-service:8001"],
+          "encoding": "json",
+          "is_collection": true
+        }
+      ],
+      "extra_config": {
+        "qos/http-cache": {
+          "shared": false
+        }
+      }
+    },
+    {
+      "endpoint": "/api/suppliers/{supplier_id}",
+      "method": "GET",
+      "backend": [
+        {
+          "url_pattern": "/suppliers/{supplier_id}",
+          "host": ["http://supplier-service:8001"]
+        }
+      ]
+    },
+    {
+      "endpoint": "/api/suppliers",
+      "method": "POST",
+      "backend": [
+        {
+          "url_pattern": "/suppliers",
+          "host": ["http://supplier-service:8001"]
+        }
+      ]
+    },
+    {
+      "endpoint": "/api/suppliers/{supplier_id}",
+      "method": "PUT",
+      "backend": [
+        {
+          "url_pattern": "/suppliers/{supplier_id}",
+          "host": ["http://supplier-service:8001"]
+        }
+      ]
+    },
+    {
+      "endpoint": "/api/suppliers/{supplier_id}",
+      "method": "PATCH",
+      "backend": [
+        {
+          "url_pattern": "/suppliers/{supplier_id}",
+          "host": ["http://supplier-service:8001"]
+        }
+      ]
+    },
+    {
+      "endpoint": "/api/suppliers/{supplier_id}",
+      "method": "DELETE",
+      "backend": [
+        {
+          "url_pattern": "/suppliers/{supplier_id}",
+          "host": ["http://supplier-service:8001"],
+          "encoding": "no-op"
+        }
+      ]
+    },
+    {
+      "endpoint": "/api/suppliers/{supplier_id}/products",
+      "method": "POST",
+      "backend": [
+        {
+          "url_pattern": "/suppliers/{supplier_id}/products",
+          "host": ["http://supplier-service:8001"]
+        }
+      ]
+    },
+    {
+      "endpoint": "/api/suppliers/{supplier_id}/products/{product_id}",
+      "method": "DELETE",
+      "backend": [
+        {
+          "url_pattern": "/suppliers/{supplier_id}/products/{product_id}",
+          "host": ["http://supplier-service:8001"]
+        }
+      ]
     }
   ],
   "extra_config": {
@@ -147,7 +403,8 @@
       ],
       "allow_headers": [
         "Content-Type",
-        "Authorization"
+        "Authorization",
+        "Cache-Control"
       ],
       "expose_headers": [
         "Content-Length",
